@@ -2,9 +2,18 @@ package com.educandoweb.cursomc.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+
+@Entity //Estabelece que está classe é uma entidade do jpa
 public class Categoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // Define a estratégia de geração automática dos Ids das categorias
 	private Integer id;
 	private String name;
 	

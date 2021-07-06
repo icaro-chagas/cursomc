@@ -3,10 +3,12 @@ package com.educandoweb.cursomc.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.educandoweb.cursomc.domain.Categoria;
 import com.educandoweb.cursomc.repositories.CategoriaRepository;
+import com.educandoweb.cursomc.services.exceptions.DataIntegrityException;
 import com.educandoweb.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -32,5 +34,15 @@ public class CategoriaService {
 		find(obj.getId());
 		return repo.save(obj); /* O método save serve tanto para inserir quanto atualizar. Quando o id é null 
 		tal método insere, e quando o id não é null o método atualiza */
+	}
+	
+	public void delete(Integer id) {
+		find(id);
+		try {
+			repo.deleteById(id);
+		}
+		catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos!");
+		}
 	}
 }

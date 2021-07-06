@@ -22,10 +22,11 @@ public class CategoriaResource {
 	private CategoriaService service;
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id) { // @PathVariable permite que o Spring saiba que o id provindo da url seja mapeado para a variável id. 
+	public ResponseEntity<Categoria> find(@PathVariable Integer id) { /* @PathVariable permite que o Spring "saiba" que o id provindo da url 
+		deve ser mapeado para a variável id. */
 		// ResponseEntity encapsula, ou armazena, várias informações de uma resposta HTTP para um serviço REST.
 		
-		Categoria obj = service.buscar(id);
+		Categoria obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
@@ -38,5 +39,12 @@ public class CategoriaResource {
 				.buildAndExpand(obj.getId())
 				.toUri();
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id) {
+		obj.setId(id);
+		obj = service.update(obj);
+		return ResponseEntity.noContent().build();
 	}
 }
